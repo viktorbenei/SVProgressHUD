@@ -31,6 +31,8 @@ static const CGFloat SVProgressHUDRingRadius = 14;
 static const CGFloat SVProgressHUDRingThickness = 6;
 #endif
 
+static const CGFloat kDefaultStatusTextConstraintWidth = 200;
+
 @interface SVProgressHUD ()
 
 @property (nonatomic, readwrite) SVProgressHUDMaskType maskType;
@@ -50,6 +52,7 @@ static const CGFloat SVProgressHUDRingThickness = 6;
 
 @property (nonatomic, readonly) CGFloat visibleKeyboardHeight;
 @property (nonatomic, assign) UIOffset offsetFromCenter;
+@property (nonatomic, assign) CGFloat statusTextConstraintWidth;
 
 - (void)showProgress:(float)progress
               status:(NSString*)string
@@ -180,6 +183,14 @@ static const CGFloat SVProgressHUDRingThickness = 6;
     [self setOffsetFromCenter:UIOffsetZero];
 }
 
++ (void)setStatusTextConstraintWidth:(CGFloat)textConstraintWidth {
+    [self sharedView].statusTextConstraintWidth = textConstraintWidth;
+}
+
++ (void)resetStatusTextConstraintWidth {
+    [self sharedView].statusTextConstraintWidth = kDefaultStatusTextConstraintWidth;
+}
+
 #pragma mark - Instance Methods
 
 - (id)initWithFrame:(CGRect)frame {
@@ -190,6 +201,7 @@ static const CGFloat SVProgressHUDRingThickness = 6;
 		self.alpha = 0;
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         self.activityCount = 0;
+        self.statusTextConstraintWidth = kDefaultStatusTextConstraintWidth;
     }
 	
     return self;
@@ -244,7 +256,7 @@ static const CGFloat SVProgressHUDRingThickness = 6;
     BOOL imageUsed = (self.imageView.image) || (self.imageView.hidden);
     
     if(string) {
-        CGSize constraintSize = CGSizeMake(200, 300);
+        CGSize constraintSize = CGSizeMake(self.statusTextConstraintWidth, 300);
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= 70000
         CGRect stringRect = [string boundingRectWithSize:constraintSize options:(NSStringDrawingUsesFontLeading|NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesLineFragmentOrigin) attributes:@{NSFontAttributeName: self.stringLabel.font} context:NULL];
         stringWidth = stringRect.size.width;

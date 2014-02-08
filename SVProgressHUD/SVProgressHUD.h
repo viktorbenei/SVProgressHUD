@@ -43,6 +43,10 @@ typedef NSUInteger SVProgressHUDMaskType;
 + (void)setOffsetFromCenter:(UIOffset)offset;
 + (void)resetOffsetFromCenter;
 
+/*! Change how wide the text can be */
++ (void)setStatusTextConstraintWidth:(CGFloat)textConstraintWidth;
++ (void)resetStatusTextConstraintWidth;
+
 + (void)show;
 + (void)showWithMaskType:(SVProgressHUDMaskType)maskType;
 + (void)showWithStatus:(NSString*)status;
